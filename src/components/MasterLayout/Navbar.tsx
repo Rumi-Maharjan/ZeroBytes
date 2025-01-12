@@ -27,9 +27,9 @@ const Navbar: React.FC = () => {
             }
         };
     
-        useEffect(() => {
-            fetchCateogry();
-        }, []);
+    useEffect(() => {
+        fetchCateogry();
+    }, []);
 
     const handleMenuToggle = () => {
         setIsMenuOpen((prev) => !prev);
