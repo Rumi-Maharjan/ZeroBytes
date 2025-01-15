@@ -78,10 +78,6 @@ const BlogDetails: React.FC = () => {
     const onSubmit = async (data: any) => {
         setLoading(true);
         try {
-            if (!blog?.title) {
-                console.log("Blog title is missing. Comment not posted.");
-                return;
-            }
     
             const commentData = {
                 comment: data.comment,
@@ -157,6 +153,21 @@ const BlogDetails: React.FC = () => {
     
     const cleanDescription = imageTags(blog?.description_html);
 
+    const handleFacebookShare = () => {
+        const blogUrl = `${config.shareUrl}/blog/${encodeURIComponent(blog?.title)}?id=${blog?.id}`;
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${blogUrl}`;
+        window.open(shareUrl, "_blank", "noopener,noreferrer");
+    }
+
+    const handleTwitterShare = () => {
+        const blogUrl = `${config.shareUrl}/blog/${encodeURIComponent(blog?.title)}?id=${blog?.id}`;
+        const tweetText = encodeURIComponent(
+            `Check out this blog: ${blog?.title} ${blogUrl}`
+        );
+        const shareUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+        window.open(shareUrl, "_blank", "noopener,noreferrer");
+    };
+
     return (
         <div className="side">
             {loading && (
@@ -172,27 +183,23 @@ const BlogDetails: React.FC = () => {
                     <div className="flex lg:items-center lg:justify-between md:flex-row flex-col gap-3 lg:mt-0 mt-3">
                         <p className="text-logo text-opacity-60 text-sm lato-regular font-medium">Published {formatBlogDate(blog?.createdAt)}</p>
                         <div className="flex items-center gap-4">
-                            <a 
-                                href={`https://www.facebook.com/sharer/sharer.php?u=${config.shareUrl}/details`} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
+                            <div 
+                                onClick={handleFacebookShare}
+                                className="cursor-pointer"
                             >
                                 <Image src="/images/facebook.png" alt="Facebook" width={10000} height={10000} className="object-contain w-full" />
-                            </a>
-                            <a 
-                                href="" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
+                            </div>
+                            <div 
+                                className="cursor-pointer"
                             >
                                 <Image src="/images/instagram.png" alt="Instagram" width={10000} height={10000} className="object-contain w-full" />
-                            </a>
-                            <a 
-                                href={`https://twitter.com/intent/tweet?url=${config.shareUrl}/details&text=Check%20out%20this%20amazing%20article!`}
-                                target="_blank" 
-                                rel="noopener noreferrer"
+                            </div>
+                            <div 
+                                onClick={handleTwitterShare}
+                                className="cursor-pointer"
                             >
                                 <Image src="/images/twitter.png" alt="Twitter" width={10000} height={10000} className="object-contain w-full" />
-                            </a>
+                            </div>
                             <div className="cursor-pointer"><Image src="/images/share.png" alt="image" width={10000} height={10000} className="object-contain w-full" /></div>
                         </div>
                     </div>
